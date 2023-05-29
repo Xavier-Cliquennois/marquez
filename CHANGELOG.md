@@ -2,6 +2,12 @@
 
 ## [Unreleased](https://github.com/MarquezProject/marquez/compare/0.34.0...HEAD)
 
+### Added
+
+* Ability to decode static metadata events [`#2495`](https://github.com/MarquezProject/marquez/pull/2495) [@pawel-big-lebowski]( https://github.com/pawel-big-lebowski)  
+  *Adds the ability to distinguish on a bakend static metadata events introduced based on the [proposal](https://github.com/OpenLineage/OpenLineage/blob/main/proposals/1837/static_lineage.md).*
+
+
 ## [0.34.0](https://github.com/MarquezProject/marquez/compare/0.33.0...0.34.0) - 2023-05-18
 
 ### Fixed
