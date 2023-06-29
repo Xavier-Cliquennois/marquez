@@ -70,8 +70,7 @@ const Datasets: React.FC<DatasetsProps> = ({ datasets, isDatasetsLoading, isData
     {
       field: 'name',
       headerName: i18next.t('datasets_route.name_col'),
-      renderCell: (params) => {
-        return <MqText
+      renderCell: (params) => (<MqText
           link
           linkTo={`/lineage/${encodeNode(
             'DATASET',
@@ -80,35 +79,30 @@ const Datasets: React.FC<DatasetsProps> = ({ datasets, isDatasetsLoading, isData
           )}`}
         >
           {params.row.name}
-        </MqText>
-      },
-      width: 400,
+      </MqText>),
+      flex: 2,
       editable: false,
     },
-    { field: 'namespace', headerName: i18next.t('datasets_route.namespace_col'), width: 200, editable: false, },
-    { field: 'sourceName', headerName: i18next.t('datasets_route.source_col'), width: 200, editable: false, },
+    { field: 'namespace', headerName: i18next.t('datasets_route.namespace_col'), flex: 1, editable: false, },
+    { field: 'sourceName', headerName: i18next.t('datasets_route.source_col'), flex: 1, editable: false, },
     {
       field: 'updatedAt',
       headerName: i18next.t('datasets_route.updated_col'),
-      renderCell: (params) => {
-        return <MqText>{formatUpdatedAt(params.row.updatedAt)}</MqText>
-      },
-      width: 200,
+      renderCell: (params) => (<MqText>{formatUpdatedAt(params.row.updatedAt)}</MqText>),
+      flex: 1,
       editable: false,
     },
     {
       field: 'facets',
       headerName: i18next.t('datasets_route.status_col'),
-      renderCell: (params) => {
-        return (datasetFacetsStatus(params.row.facets) ? (
+      renderCell: (params) => (datasetFacetsStatus(params.row.facets) ? (
           <>
             <MqStatus color={datasetFacetsStatus(params.row.facets)} />
           </>
         ) : (
           <MqText>N/A</MqText>
-        ))
-      },
-      width: 200,
+      )),
+      flex: 1,
       editable: false,
     }
   ]
