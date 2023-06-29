@@ -1,10 +1,10 @@
 // Copyright 2018-2023 contributors to the Marquez project
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { Box, Container, createTheme } from '@mui/material'
-import { DRAWER_WIDTH } from '../../helpers/theme'
+import { Box, Container, Drawer, createTheme } from '@mui/material'
+import { HEADER_HEIGHT } from '../../helpers/theme'
 import { IState } from '../../store/reducers'
 import { LineageNode } from '../lineage/types'
 import { Undefinable } from '../../types/util/Nullable'
@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 import { isLineageDataset, isLineageJob } from '../../helpers/nodes'
 import { useTheme } from '@emotion/react'
 import DatasetDetailPage from '../datasets/DatasetDetailPage'
-import DragBar from '../lineage/components/drag-bar/DragBar'
 import JobDetailPage from '../jobs/JobDetailPage'
 
 interface OwnProps {
@@ -25,34 +24,40 @@ interface StateProps {
 
 type BottomBarProps = StateProps & OwnProps
 
-const BottomBar: React.FC<BottomBarProps> = ({ bottomBarHeight, selectedNodeData }) => {
-
+const BottomBar: React.FC<BottomBarProps> = ({ selectedNodeData }) => {
+  const [isOpen, setIsOpen] = React.useState(selectedNodeData ? true : false)
   const theme = createTheme(useTheme())
 
-  if (!selectedNodeData) {
-    return null
-  }
-  const lineageJob = isLineageJob(selectedNodeData.data)
-  const lineageDataset = isLineageDataset(selectedNodeData.data)
+  const lineageJob = isLineageJob(selectedNodeData?.data)
+  const lineageDataset = isLineageDataset(selectedNodeData?.data)
+
+  useEffect(() => {
+    setIsOpen(selectedNodeData ? true : false)
+  }, [selectedNodeData])
+
   return (
-    <Box sx={{
-      marginLeft: `${DRAWER_WIDTH}px`,
-      right: 0,
-      width: `calc(100% - ${DRAWER_WIDTH}px)`,
-      bottom: 0,
-      position: 'fixed'
-    }}>
-      <DragBar />
+    <Drawer
+      open={isOpen}
+      anchor='right'
+      onClose={() => setIsOpen(false)}
+      hideBackdrop={true}
+      sx={{
+        width: 'fit-content'
+      }}
+    >
       <Box sx={{
-        overflow: 'auto',
-        backgroundColor: theme.palette.background.default
-      }} height={bottomBarHeight}>
+        backgroundColor: theme.palette.background.default,
+        marginTop: `${HEADER_HEIGHT}px`,
+        minWidth: '600px',
+        height: '100%',
+        padding: '0rem 1rem'
+      }}>
         <Container maxWidth={'lg'} disableGutters={true}>
           {lineageJob && <JobDetailPage job={lineageJob} />}
           {lineageDataset && <DatasetDetailPage lineageDataset={lineageDataset} />}
         </Container>
       </Box>
-    </Box>
+    </Drawer >
   )
 }
 
