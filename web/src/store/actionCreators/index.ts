@@ -211,11 +211,6 @@ export const setSelectedNode = (node: string) => ({
   payload: node
 })
 
-export const setBottomBarHeight = (height: number) => ({
-  type: actionTypes.SET_BOTTOM_BAR_HEIGHT,
-  payload: height
-})
-
 export const fetchLineage = (nodeType: JobOrDataset, namespace: string, name: string) => ({
   type: actionTypes.FETCH_LINEAGE,
   payload: {

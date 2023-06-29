@@ -13,7 +13,7 @@ import { applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from '@redux-devtools/extension'
 import { createBrowserHistory } from 'history'
 import { theme } from '../helpers/theme'
-import BottomBar from './bottom-bar/BottomBar'
+import MoreInfo from './more-info/MoreInfo'
 import Datasets from '../routes/datasets/Datasets'
 import Events from '../routes/events/Events'
 import Header from './header/Header'
@@ -66,7 +66,7 @@ const App = (): ReactElement => {
                     <Route path={'/events'} element={<Events />} />
                     <Route path={'/lineage/:nodeType/:namespace/:nodeName'} element={<>
                       <Lineage />
-                      <BottomBar />
+                      <MoreInfo />
                     </>} />
                   </Routes>
                   <Toast />

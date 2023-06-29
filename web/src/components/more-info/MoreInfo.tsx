@@ -18,13 +18,9 @@ interface OwnProps {
   selectedNodeData: Undefinable<LineageNode>
 }
 
-interface StateProps {
-  bottomBarHeight: number
-}
+type MoreInfoProps = OwnProps
 
-type BottomBarProps = StateProps & OwnProps
-
-const BottomBar: React.FC<BottomBarProps> = ({ selectedNodeData }) => {
+const MoreInfo: React.FC<MoreInfoProps> = ({ selectedNodeData }) => {
   const [isOpen, setIsOpen] = React.useState(selectedNodeData ? true : false)
   const theme = createTheme(useTheme())
 
@@ -62,8 +58,7 @@ const BottomBar: React.FC<BottomBarProps> = ({ selectedNodeData }) => {
 }
 
 const mapStateToProps = (state: IState) => ({
-  bottomBarHeight: state.lineage.bottomBarHeight,
   selectedNodeData: state.lineage.lineage.graph.find(node => state.lineage.selectedNode === node.id)
 })
 
-export default connect(mapStateToProps)(BottomBar)
+export default connect(mapStateToProps)(MoreInfo)
