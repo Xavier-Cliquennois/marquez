@@ -82,17 +82,19 @@ const Datasets: React.FC<DatasetsProps> = ({ datasets, isDatasetsLoading, isData
           {params.row.name}
         </MqText>
       },
-      width: 400
+      width: 400,
+      editable: false,
     },
-    { field: 'namespace', headerName: i18next.t('datasets_route.namespace_col'), width: 200 },
-    { field: 'sourceName', headerName: i18next.t('datasets_route.source_col'), width: 200 },
+    { field: 'namespace', headerName: i18next.t('datasets_route.namespace_col'), width: 200, editable: false, },
+    { field: 'sourceName', headerName: i18next.t('datasets_route.source_col'), width: 200, editable: false, },
     {
       field: 'updatedAt',
       headerName: i18next.t('datasets_route.updated_col'),
       renderCell: (params) => {
         return <MqText>{formatUpdatedAt(params.row.updatedAt)}</MqText>
       },
-      width: 200
+      width: 200,
+      editable: false,
     },
     {
       field: 'facets',
@@ -106,7 +108,8 @@ const Datasets: React.FC<DatasetsProps> = ({ datasets, isDatasetsLoading, isData
           <MqText>N/A</MqText>
         ))
       },
-      width: 200
+      width: 200,
+      editable: false,
     }
   ]
 
