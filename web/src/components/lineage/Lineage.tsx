@@ -6,29 +6,22 @@ import React from 'react'
 import '../../i18n/config'
 import * as Redux from 'redux'
 import { Box } from '@mui/material'
-import { DAGRE_CONFIG, INITIAL_TRANSFORM, NODE_SIZE } from './config'
+import { DAGRE_CONFIG, NODE_SIZE } from './config'
 import { GraphEdge, Node as GraphNode, graphlib, layout } from 'dagre'
 import { HEADER_HEIGHT } from '../../helpers/theme'
 import { IState } from '../../store/reducers'
 import { JobOrDataset, LineageNode, MqNode } from './types'
 import { LineageGraph } from '../../types/api'
-import { Zoom } from '@visx/zoom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { fetchLineage, resetLineage, setSelectedNode } from '../../store/actionCreators'
 import { generateNodeId } from '../../helpers/nodes'
-import { localPoint } from '@visx/event'
 import { useParams } from 'react-router-dom'
-import Edge from './components/edge/Edge'
 import MqEmpty from '../core/empty/MqEmpty'
 import MqText from '../core/text/MqText'
-import Node from './components/node/Node'
-import ParentSize from '@visx/responsive/lib/components/ParentSize'
+import FlowDagre from './components/flow/FlowDagre'
 
 const BOTTOM_OFFSET = 8
-const MIN_ZOOM = 1 / 4
-const MAX_ZOOM = 4
-const DOUBLE_CLICK_MAGNIFICATION = 1.1
 
 interface StateProps {
   lineage: LineageGraph
@@ -137,9 +130,6 @@ export interface LineageProps extends StateProps, DispatchProps {}
 let g: graphlib.Graph<MqNode>
 
 const Lineage: React.FC<LineageProps> = (props: LineageProps) => {
-  React.useEffect(() => {
-    console.log('props.lineage', props.lineage)
-  }, [props.lineage])
 
   const [state, setState] = React.useState<LineageState>({
     graph: g,
@@ -228,78 +218,7 @@ const Lineage: React.FC<LineageProps> = (props: LineageProps) => {
             </MqEmpty>
           </Box>
         )}
-        {state?.graph && (
-          <ParentSize>
-            {parent => (
-              <Zoom
-                width={parent.width}
-                height={parent.height}
-                scaleXMin={MIN_ZOOM}
-                scaleXMax={MAX_ZOOM}
-                scaleYMin={MIN_ZOOM}
-                scaleYMax={MAX_ZOOM}
-                initialTransformMatrix={INITIAL_TRANSFORM}
-              >
-                {zoom => {
-                  return (
-                    <Box position='relative'>
-                      <svg
-                        id={'GRAPH'}
-                        width={parent.width}
-                        height={parent.height}
-                        style={{
-                          cursor: zoom.isDragging ? 'grabbing' : 'grab'
-                        }}
-                      >
-                        {/* background */}
-                        <g transform={zoom.toString()}>
-                          <Edge edgePoints={state?.edges} />
-                        </g>
-                        <rect
-                          width={parent.width}
-                          height={parent.height}
-                          fill={'transparent'}
-                          onTouchStart={zoom.dragStart}
-                          onTouchMove={zoom.dragMove}
-                          onTouchEnd={zoom.dragEnd}
-                          onMouseDown={event => {
-                            zoom.dragStart(event)
-                          }}
-                          onMouseMove={zoom.dragMove}
-                          onMouseUp={zoom.dragEnd}
-                          onMouseLeave={() => {
-                            if (zoom.isDragging) zoom.dragEnd()
-                          }}
-                          onDoubleClick={event => {
-                            const point = localPoint(event) || {
-                              x: 0,
-                              y: 0
-                            }
-                            zoom.scale({
-                              scaleX: DOUBLE_CLICK_MAGNIFICATION,
-                              scaleY: DOUBLE_CLICK_MAGNIFICATION,
-                              point
-                            })
-                          }}
-                        />
-                        {/* foreground */}
-                        <g transform={zoom.toString()}>
-                          {state?.nodes.map(node => (
-                            <Node
-                              key={node.data.name}
-                              node={node}
-                              selectedNode={props.selectedNode}
-                            />
-                          ))}
-                        </g>
-                      </svg>
-                    </Box>
-                  )
-                }}
-              </Zoom>
-            )}
-          </ParentSize>
-        )}
+        {state?.graph && <FlowDagre lineageNode={props.lineage.graph} />}
       </Box>
     )
 }
