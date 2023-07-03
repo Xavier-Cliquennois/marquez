@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom'
 import MqEmpty from '../core/empty/MqEmpty'
 import MqText from '../core/text/MqText'
 import FlowDagre from './components/flow/FlowDagre'
+import FlowHierarchy from './components/flow/FlowHierarchy/FlowHierarchy'
 
 const BOTTOM_OFFSET = 8
 
@@ -93,7 +94,6 @@ export function getSelectedPaths(g: graphlib.Graph<MqNode>, selectedNode: string
     visitedNodes.successors.add(node)
 
     const successors = g?.successors(node)
-    console.log('successors', successors)
     if (successors?.length) {
       for (let i = 0; i < node.length - 1; i++) {
         if (successors[i]) {
@@ -218,7 +218,7 @@ const Lineage: React.FC<LineageProps> = (props: LineageProps) => {
             </MqEmpty>
           </Box>
         )}
-        {state?.graph && <FlowDagre lineageNode={props.lineage.graph} />}
+        {state?.graph && <FlowHierarchy lineageNode={props.lineage.graph} />}
       </Box>
     )
 }
