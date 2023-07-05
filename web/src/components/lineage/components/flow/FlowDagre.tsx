@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import ReactFlow, { MiniMap, Controls, Background, useNodesState, useEdgesState, addEdge, Node, Edge, Position, Panel, ConnectionLineType } from 'reactflow'
 import dagre from 'dagre';
 import { LineageNode } from '../../types';
+import * as d3 from "d3";
 
 import 'reactflow/dist/style.css'
 
@@ -38,7 +39,6 @@ const FlowDagre: React.FC<FlowDagreProps> = ({ lineageNode }) => {
                         id: JSON.stringify(inEdge),
                         source: inEdge.origin,
                         target: inEdge.destination,
-                        //type: 'smoothstep',
                         animated: true
                     })
                 }
@@ -50,7 +50,6 @@ const FlowDagre: React.FC<FlowDagreProps> = ({ lineageNode }) => {
                         id: JSON.stringify(outEdge),
                         source: outEdge.origin,
                         target: outEdge.destination,
-                        //type: 'smoothstep',
                         animated: true
                     })
                 }
@@ -58,7 +57,7 @@ const FlowDagre: React.FC<FlowDagreProps> = ({ lineageNode }) => {
         });
 
         const isHorizontal = direction === 'LR';
-        dagreGraph.setGraph({ rankdir: direction, ranksep: 300, ranker: 'longest-path' });
+        dagreGraph.setGraph({ rankdir: direction, ranksep: 300 });
 
         nodes.forEach((node) => {
             dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });

@@ -21,6 +21,9 @@ import MqEmpty from '../core/empty/MqEmpty'
 import MqText from '../core/text/MqText'
 import FlowDagre from './components/flow/FlowDagre'
 import FlowHierarchy from './components/flow/FlowHierarchy/FlowHierarchy'
+import FlowHierarchyKedro from './components/flow/FlowHierarchy/kedro/FlowHierarchyKedro'
+import FlowDagreD3 from './components/flow/FlowDagreD3'
+import FlowD3Force from './components/flow/FlowD3Force'
 
 const BOTTOM_OFFSET = 8
 
@@ -127,15 +130,15 @@ export function getSelectedPaths(g: graphlib.Graph<MqNode>, selectedNode: string
 
 export interface LineageProps extends StateProps, DispatchProps {}
 
-let g: graphlib.Graph<MqNode>
+//let g: graphlib.Graph<MqNode>
 
 const Lineage: React.FC<LineageProps> = (props: LineageProps) => {
 
-  const [state, setState] = React.useState<LineageState>({
-    graph: g,
-    edges: [],
-    nodes: []
-  })
+  // const [state, setState] = React.useState<LineageState>({
+  //   graph: g,
+  //   edges: [],
+  //   nodes: []
+  // })
   const { nodeName, namespace, nodeType } = useParams()
   const mounted = React.useRef<boolean>(false)
 
@@ -165,23 +168,23 @@ const Lineage: React.FC<LineageProps> = (props: LineageProps) => {
         JSON.stringify(props.lineage) !== JSON.stringify(prevLineage.current) &&
         props.selectedNode
       ) {
-        g = initGraph()
-        buildGraphAll(g, props.lineage.graph, (gResult: graphlib.Graph<MqNode>) => {
-          setState({
-            graph: gResult,
-            edges: getEdges(),
-            nodes: gResult.nodes().map(v => gResult.node(v))
-          })
-        })
+        // g = initGraph()
+        // buildGraphAll(g, props.lineage.graph, (gResult: graphlib.Graph<MqNode>) => {
+        //   setState({
+        //     graph: gResult,
+        //     edges: getEdges(),
+        //     nodes: gResult.nodes().map(v => gResult.node(v))
+        //   })
+        // })
       }
-      if (props.selectedNode !== prevSelectedNode.current) {
-        props.fetchLineage(
-          nodeType?.toUpperCase() as JobOrDataset,
-          namespace || '',
-          nodeName || ''
-        )
-        getEdges()
-      }
+      // if (props.selectedNode !== prevSelectedNode.current) {
+      //   props.fetchLineage(
+      //     nodeType?.toUpperCase() as JobOrDataset,
+      //     namespace || '',
+      //     nodeName || ''
+      //   )
+      //   getEdges()
+      // }
 
       prevLineage.current = props.lineage
       prevSelectedNode.current = props.selectedNode
@@ -195,14 +198,14 @@ const Lineage: React.FC<LineageProps> = (props: LineageProps) => {
     }
   }, [])
 
-  const getEdges = () => {
-    const selectedPaths = getSelectedPaths(g, props.selectedNode)
+  // const getEdges = () => {
+  //   const selectedPaths = getSelectedPaths(g, props.selectedNode)
 
-    return g?.edges().map(e => {
-      const isSelected = selectedPaths.some((r: any) => e.v === r[0] && e.w === r[1])
-      return Object.assign(g.edge(e), { isSelected: isSelected })
-    })
-  }
+  //   return g?.edges().map(e => {
+  //     const isSelected = selectedPaths.some((r: any) => e.v === r[0] && e.w === r[1])
+  //     return Object.assign(g.edge(e), { isSelected: isSelected })
+  //   })
+  // }
 
   const i18next = require('i18next')
 
@@ -218,7 +221,7 @@ const Lineage: React.FC<LineageProps> = (props: LineageProps) => {
             </MqEmpty>
           </Box>
         )}
-        {state?.graph && <FlowHierarchy lineageNode={props.lineage.graph} />}
+        {/*state?.graph*/ props.lineage.graph && <FlowD3Force lineageNode={props.lineage.graph} />}
       </Box>
     )
 }
