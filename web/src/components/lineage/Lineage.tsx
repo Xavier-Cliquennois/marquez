@@ -23,7 +23,7 @@ import FlowDagre from './components/flow/FlowDagre'
 import FlowHierarchy from './components/flow/FlowHierarchy/FlowHierarchy'
 import FlowHierarchyKedro from './components/flow/FlowHierarchy/kedro/FlowHierarchyKedro'
 import FlowDagreD3 from './components/flow/FlowDagreD3'
-import FlowD3Force from './components/flow/FlowD3Force'
+import FlowD3Force from './components/flow/flowD3Force/FlowD3Force'
 
 const BOTTOM_OFFSET = 8
 
